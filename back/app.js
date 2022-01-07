@@ -30,12 +30,11 @@ const userRoutes = require("./routes/user");
 const app = express();
 
 
-
-mongoose.connect('mongodb+srv://ElodieFons:Isis1991.@cluster0.7ktwp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+  mongoose.connect(HIDDEN_TOKEN,
+    { useNewUrlParser: true,
+      useUnifiedTopology: true })
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
