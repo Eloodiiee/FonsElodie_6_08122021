@@ -104,7 +104,10 @@ module.exports.likesDislikes = (req, res, next) => {
           {_id: req.params.id},
           //"$ink" paramètre de MongoDB pour ajouter 1 like
           //"$push" paramètre de MongoDB pour mettre la valeur dans l'array 
-          {$inc: {likes: +1}, $push: { usersLiked: req.body.userId}})
+          {$inc: {likes: +1}, $push: { usersLiked: req.body.userId} ,
+          _id: req.params.id
+        })
+      
           //Response 200 envoyée
           .then(() => res.status(200).json({message : "J'aime cette sauce !"}))
           //Sinon je renvoie une erreur 400
@@ -117,7 +120,10 @@ module.exports.likesDislikes = (req, res, next) => {
           //La sauce est définie par son "ID"
           {_id: req.params.id},
           //j'utilise $inc de MongoDB pour incrémenter les dislikes de 1
-          {$inc: {dislikes: +1}, $push: {usersDisliked: req.body.userId}})
+          {$inc: {dislikes: +1}, $push: {usersDisliked: req.body.userId} ,
+          _id: req.params.id
+        })
+         
           //Response 200 envoyée
           .then((sauce) => res.status(200).json({message : "Je n'aime plus cette sauce !"}))
           //Sinon je renvoie une erreur 400
@@ -134,9 +140,10 @@ module.exports.likesDislikes = (req, res, next) => {
               //Mise à  jour de la Sauce grâce à "updateOne"
               Sauce.updateOne(
                   //Je supprrime d'abord le like de l'array de l'utilisateur , en utilisant "$pull" de MongoDB
-                  {$pull: {usersLiked: req.body.userId,
-                  //Je supprime le like
-                  $inc: {likes: -1}}})
+                   //Je supprime le like
+                  {$inc: {likes: -1}, $pull: {usersLiked: req.body.userId},
+                  _id: req.params.id
+                  })
                   //Response 200 envoyée
                   .then(() => res.status(200).json({message: "J'aime enlevé"}))
                   //Sinon je renvoie une erreur 400
@@ -148,9 +155,10 @@ module.exports.likesDislikes = (req, res, next) => {
               //Mise à  jour de la Sauce grâce à "updateOne"
               Sauce.updateOne(
                   //Je supprrime d'abord le  dislikes de l'array de l'utilisateur
-                  {$pull: {usersDisliked: req.body.userId, 
                   //Je supprime le dislike
-                  $inc: {Dislikes: -1}}})
+                  {$inc: {dislikes: -1}, $pull: {usersDisliked: req.body.userId},
+                  _id: req.params.id
+                  })
                   //Response 200 envoyée
                   .then(() => res.status(200).json({message: "Dislike enlevé !"}))
                   //Sinon je renvoie une erreur 400
