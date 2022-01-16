@@ -22,7 +22,7 @@ module.exports.getOneSauce = (req, res, next) => {
     .catch((error) => res.status(404).json({ error }));
 };
 
-//Fonction pouor créer une sauce
+//Fonction pour créer une sauce
 module.exports.createSauce = (req, res, next) => {
   //Je convertie en format JSON 
   const sauceObject = JSON.parse(req.body.sauce);
@@ -53,7 +53,7 @@ module.exports.createSauce = (req, res, next) => {
 
 //Fonction pour modifier une sauce
 module.exports.modifySauce = (req, res, next) => {
-  //Je vérifie s'il y a une nouvelle image ou non et s'il y en a une nouvelle je la met à jour
+  //Je vérifie s'il y a une nouvelle image ou non et s'il y en a une nouvelle je la mets à jour
   const sauceObject = req.file ? 
   //je convertie les données en format JSON 
   { ...JSON.parse(req.body.sauce), 
@@ -94,7 +94,7 @@ module.exports.deleteSauce = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
-//Ici je gère les like / dislike
+//Ici je gère les likes / dislikes
 module.exports.likesDislikes = (req, res, next) => {
   //Ici, la valeur de "1" est ici pour indiquer un "like"
   if(req.body.like === 1) {
@@ -102,7 +102,7 @@ module.exports.likesDislikes = (req, res, next) => {
       Sauce.updateOne(
           //La mise à jour est défini par l'ID de la sauce
           {_id: req.params.id},
-          //"$ink" paramètre de MongoDB pour ajouter 1 like
+          //"$inc" paramètre de MongoDB pour ajouter 1 like
           //"$push" paramètre de MongoDB pour mettre la valeur dans l'array 
           {$inc: {likes: +1}, $push: { usersLiked: req.body.userId} ,
           _id: req.params.id
@@ -154,7 +154,7 @@ module.exports.likesDislikes = (req, res, next) => {
           else if(sauce.usersDisliked.includes(req.body.userId)) {
               //Mise à  jour de la Sauce grâce à "updateOne"
               Sauce.updateOne(
-                  //Je supprrime d'abord le  dislikes de l'array de l'utilisateur
+                  //Je supprrime d'abord le  dislike de l'array de l'utilisateur
                   //Je supprime le dislike
                   {$inc: {dislikes: -1}, $pull: {usersDisliked: req.body.userId},
                   _id: req.params.id
