@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const helmet = require("helmet");
 //Module de sécurité contre les attaques XSS 
 const xss = require("xss-clean");
-// Module Express pour mettre un temps de session limitée
+// Module Express pour mettre un temps de session limité
 const rateLimit = require("express-rate-limit");
 //Module pour charger mes variables
 const dotenv = require('dotenv');
